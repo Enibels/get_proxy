@@ -14,6 +14,6 @@ jobs:
         git config --local user.name "vveg26"
         git checkout --orphan new_branch
         git commit -m "init"
-        git branch -D master
-        git branch -m master
-        git push -f origin master 
+        git branch -D main
+        git branch -m main
+        git push -f origin main 
