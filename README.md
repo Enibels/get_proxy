@@ -14,8 +14,11 @@ Subscribing URL:
 - Clash: `https://raw.githubusercontent.com/vveg26/get_proxy/main/dist/clash.config.yaml`
 - V2Ray: `https://raw.githubusercontent.com/vveg26/get_proxy/main/dist/v2ray.config.txt`
 
-## 如何添加节点池
-proxypool中操作
-1. rss订阅源添加
-2. clash订阅源添加
-3. v2ray订阅源添加
+## 如何运行
+### 如何操作
+1. fork本仓库
+2. proxypool中操作 
+  - rss订阅源添加
+  - clash订阅源添加
+  - v2ray订阅源添加
+3. github action开启运行
