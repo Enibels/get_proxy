@@ -8,8 +8,6 @@ from typing import Any, Dict, List
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-rss_url:str = 'https://www.cfmem.com/feeds/posts/default?alt=rss'
-
 # 查询网页中/rss文本中包含clash订阅链接这几个字的文本
 clash_reg:Pattern = re.compile(r'clash订阅链接：(https?.+?)(?:&lt;|<)/span(?:&gt;|>)')
 v2ray_reg:Pattern = re.compile(r'v2ray订阅链接：(https?.+?)(?:&lt;|<)/span(?:&gt;|>)')
@@ -19,7 +17,33 @@ clash_output_tpl:str = './clash.config.template.yaml'
 v2ray_output_file:str = './dist/v2ray.config.txt'
     
 #这里填写额外增加的clash的url，v2ray同样    
-clash_extra:List[str] = ['https://raw.githubusercontent.com/LITTLESITE/BPXD/main/sub.yaml']
+rss_urls:List[str] = []
+#读取文件
+fi=open('./proxypool/rss.txt','r')
+txt=fi.readlines()
+for w in txt:
+    w=w.replace('\n','')
+    rss_urls.append(w)
+
+
+
+#这里填写额外增加的clash的url，v2ray同样    
+clash_extra:List[str] = []
+#读取文件
+fi=open('./proxypool/clashsub.txt','r')
+txt=fi.readlines()
+for w in txt:
+    w=w.replace('\n','')
+    clash_extra.append(w)
+
+#这里填写额外增加的clash的url，v2ray同样    
+v2ray_extra:List[str] = []
+#读取文件
+fi=open('./proxypool/v2raysub.txt','r')
+txt=fi.readlines()
+for w in txt:
+    w=w.replace('\n','')
+    v2ray_extra.append(w)
 
 blacklist:List[str] = list(map(lambda l:l.replace('\r', '').replace('\n', '').split(':'), open('blacklists.txt').readlines()))
 
@@ -34,7 +58,7 @@ def v2ray_urls(html:str) -> List[str]:
     '''
     Fetch URLs For V2Ray
     '''
-    return v2ray_reg.findall(html)
+    return v2ray_reg.findall(html)+v2ray_extra
 
 def fetch_html(url:str) -> str:
     '''
@@ -81,7 +105,8 @@ def merge_v2ray(configs:List[str]) -> str:
     return '\n'.join(configs)
 
 def main():
-    rss_text:str = fetch_html(rss_url)
+    for rss_url in rss_urls:
+        rss_text:str = fetch_html(rss_url)
     if rss_text is None or len(rss_text) <= 0: 
         print('[-] Failed To Fetch Content Of RSS')
         return
