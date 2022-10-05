@@ -3,7 +3,7 @@ name: Update Subscribes
 on:
   workflow_dispatch:
   schedule:
-    - cron: '45 * * * *'
+    - cron: '26 2 */1 * *'
 
 jobs:
   Update:
